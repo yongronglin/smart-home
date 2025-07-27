@@ -9,15 +9,16 @@
 </head>
 <body>
   <div class="dashboard-container">
-    <header>
-      <h1>智慧家庭儀表板</h1>
-    </header>
-    <main>
-      <section class="appliance-status">
+    <div class="left-panel">
+      <header>
+        <h1>歡迎回來，使用者</h1>
+        <div class="subtitle">您的智慧家庭儀表板總覽</div>
+      </header>
+      <div class="card">
         <h2>家電狀態</h2>
         <div class="appliance-list" id="appliance-list"></div>
-      </section>
-      <section class="energy-section">
+      </div>
+      <div class="card">
         <div class="energy-header">
           <h2>用電量</h2>
           <div class="toggle-group">
@@ -26,18 +27,22 @@
           </div>
         </div>
         <div id="energy-chart" class="chart-container"></div>
-      </section>
-      <section class="peak-section">
-        <div class="peak-block">
+      </div>
+      <div class="peak-section">
+        <div class="card peak-block">
           <h2>一天中最高用電時段</h2>
           <div id="peak-time" class="peak-info"></div>
         </div>
-        <div class="peak-block">
+        <div class="card peak-block">
           <h2>目前耗電量最高的家電</h2>
           <div id="top-appliance" class="peak-info"></div>
         </div>
-      </section>
-    </main>
+      </div>
+      <div class="card">
+        <h2>家電用電分布</h2>
+        <div class="progress-list" id="appliance-progress-list"></div>
+      </div>
+    </div>
   </div>
   <script src="dashboard.js"></script>
 </body>

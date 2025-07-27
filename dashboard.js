@@ -113,6 +113,26 @@ function renderTopAppliance() {
   document.getElementById('top-appliance').textContent = `${top.name} (${top.power} W)`;
 }
 
+// 右側家電用電分布進度條
+function renderApplianceProgress() {
+  const list = document.getElementById('appliance-progress-list');
+  if (!list) return;
+  list.innerHTML = '';
+  const total = appliances.filter(a => a.status).reduce((sum, a) => sum + a.power, 0) || 1;
+  appliances.forEach(appliance => {
+    if (!appliance.status) return;
+    const percent = Math.round((appliance.power / total) * 100);
+    const item = document.createElement('div');
+    item.className = 'progress-item';
+    item.innerHTML = `
+      <span class="progress-label">${appliance.name}</span>
+      <span class="progress-bar-bg"><span class="progress-bar" style="width:${percent}%"></span></span>
+      <span class="progress-value">${percent}%</span>
+    `;
+    list.appendChild(item);
+  });
+}
+
 // 初始化
 window.onload = function() {
   renderApplianceStatus();
@@ -120,4 +140,5 @@ window.onload = function() {
   setupToggleButtons();
   renderPeakTime();
   renderTopAppliance();
+  renderApplianceProgress();
 }; 
