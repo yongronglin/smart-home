@@ -45,37 +45,30 @@ function renderApplianceStatus() {
 let currentChart = 'week';
 function renderEnergyChart() {
   const data = currentChart === 'week' ? weekData : monthData;
-  Highcharts.chart('energy-chart', {
-    chart: {
-      type: 'column',
-      backgroundColor: '#181c24',
-      style: { fontFamily: 'Segoe UI, Noto Sans TC, Arial, sans-serif' }
-    },
-    title: { text: '' },
-    xAxis: {
-      categories: data.categories,
-      labels: { style: { color: '#b0b8c1' } }
-    },
-    yAxis: {
-      min: 0,
-      title: { text: '用電量 (kWh)', style: { color: '#b0b8c1' } },
-      labels: { style: { color: '#b0b8c1' } },
-      gridLineColor: '#232837'
-    },
-    series: [{
-      name: '用電量',
-      data: data.data.map(Number),
-      color: '#7ecfff',
-      borderRadius: 4
-    }],
-    legend: { enabled: false },
-    credits: { enabled: false },
-    tooltip: {
-      backgroundColor: '#232837',
-      style: { color: '#fff' },
-      valueSuffix: ' kWh'
+  const chart = document.getElementById('energy-chart');
+  chart.innerHTML = '';
+  // 計算最大值，轉百分比
+  const max = Math.max(...data.data.map(Number));
+  const barCount = data.categories.length;
+  chart.className = 'custom-bar-chart';
+  for (let i = 0; i < barCount; i++) {
+    const value = Number(data.data[i]);
+    const percent = Math.round((value / max) * 100);
+    const bar = document.createElement('div');
+    bar.className = 'bar-item';
+    bar.innerHTML = `
+      <div class="bar-outer">
+        <div class="bar-inner" style="height:${percent}%; background:${i === 0 ? '#32c37e' : '#d6f5e6'}">
+          ${i === 0 ? `<span class='bar-label'>${percent}%</span>` : ''}
+        </div>
+      </div>
+      <div class="bar-x-label">${data.categories[i]}</div>
+    `;
+    if (i !== 0) {
+      bar.innerHTML = bar.innerHTML.replace('</div>', `<span class='bar-label bar-label-secondary'>${percent}%</span></div>`);
     }
-  });
+    chart.appendChild(bar);
+  }
 }
 
 // 切換按鈕事件
@@ -113,6 +106,15 @@ function renderTopAppliance() {
   document.getElementById('top-appliance').textContent = `${top.name} (${top.power} W)`;
 }
 
+function getBarGradient(percent) {
+  if (percent < 50) {
+    return 'linear-gradient(90deg, #4fd18b 0%, #a8e063 100%)'; // 綠
+  } else if (percent < 80) {
+    return 'linear-gradient(90deg, #ffe259 0%, #ffa751 100%)'; // 黃
+  } else {
+    return 'linear-gradient(90deg, #ff5858 0%, #f09819 100%)'; // 紅
+  }
+}
 // 右側家電用電分布進度條
 function renderApplianceProgress() {
   const list = document.getElementById('appliance-progress-list');
@@ -126,7 +128,7 @@ function renderApplianceProgress() {
     item.className = 'progress-item';
     item.innerHTML = `
       <span class="progress-label">${appliance.name}</span>
-      <span class="progress-bar-bg"><span class="progress-bar" style="width:${percent}%"></span></span>
+      <span class="progress-bar-bg"><span class="progress-bar" style="width:${percent}%; --bar-gradient: ${getBarGradient(percent)}"></span></span>
       <span class="progress-value">${percent}%</span>
     `;
     list.appendChild(item);
