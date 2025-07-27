@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1920, initial-scale=1.0">
+  <title>智慧家庭儀表板</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <header>
+      <h1>智慧家庭儀表板</h1>
+    </header>
+    <main>
+      <section class="appliance-status">
+        <h2>家電狀態</h2>
+        <div class="appliance-list" id="appliance-list"></div>
+      </section>
+      <section class="energy-section">
+        <div class="energy-header">
+          <h2>用電量</h2>
+          <div class="toggle-group">
+            <button id="week-btn" class="toggle-btn active">本週</button>
+            <button id="month-btn" class="toggle-btn">本月</button>
+          </div>
+        </div>
+        <div id="energy-chart" class="chart-container"></div>
+      </section>
+      <section class="peak-section">
+        <div class="peak-block">
+          <h2>一天中最高用電時段</h2>
+          <div id="peak-time" class="peak-info"></div>
+        </div>
+        <div class="peak-block">
+          <h2>目前耗電量最高的家電</h2>
+          <div id="top-appliance" class="peak-info"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="dashboard.js"></script>
+</body>
+</html> 
